@@ -46,3 +46,10 @@ This just maintains constant values to avoid hardcoding.
 I have used Dependency Injections and Mediatr Pattern. This way code is cleaner and easily readable and most importantly loosely coupled.
 
 For documentation and testing I have setup Swagger so use 'try it out' option on each request to test them respectively.
+
+Execution - 
+- Please make sure you start Backend application before running Frontend.
+- Clone the repository locally and run using an IDE such as Visual Studio
+- Application should open up Swagger url as - https://localhost:44364/swagger/index.html
+- You should be able to see MovieDetails Swagger. Under the MovieInformation you should be able to see 2 Get calls.
+- You can test it using swagger directly by clicking on 'Try It Out' and then 'Execute' by passing parameters if required.
