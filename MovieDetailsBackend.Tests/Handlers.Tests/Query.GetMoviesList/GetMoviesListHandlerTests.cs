@@ -1,17 +1,15 @@
-﻿using FluentAssertions;
-using Moq;
-using MovieDetailsBackend.Constants;
-using MovieDetailsBackend.Models;
-using MovieDetailsBackend.Query.GetMoviesList;
-using MovieDetailsBackend.Services;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using Xunit;
-
-namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.GetMoviesList
+﻿namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.GetMoviesList
 {
+    using FluentAssertions;
+    using Moq;
+    using MovieDetailsBackend.Constants;
+    using MovieDetailsBackend.Models;
+    using MovieDetailsBackend.Query.GetMoviesList;
+    using MovieDetailsBackend.Services;
+    using System.Collections.Generic;
+    using System.Net;
+    using Xunit;
+
     public class GetMoviesListHandlerTests
     {
         private readonly Mock<IRepository> moqRepository = new Mock<IRepository>();
@@ -21,6 +19,36 @@ namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.GetMoviesList
         public void WhenYouTryToFindMovies_ReturnsMoviesCorrectly()
         {
             // Arrange
+            SetupOk();
+            var requestQuery = new GetMoviesListQuery();
+            var sut = new GetMoviesListHandler(moqRepository.Object);
+
+            // Act
+            var result = sut.Handle(requestQuery, new System.Threading.CancellationToken());
+
+            // Assert
+            result.Result.Status.Should().Be(HttpStatusCode.OK);
+            result.Result.Movies.Should().BeEquivalentTo(moviesList.Movies);
+        }
+
+        [Fact]
+        public void WhenYouTryToFindMovieDetails_ReturnsNotFound()
+        {
+            // Arrange
+            SetupNotFound();
+            var requestQuery = new GetMoviesListQuery();
+            var sut = new GetMoviesListHandler(moqRepository.Object);
+
+            // Act
+            var result = sut.Handle(requestQuery, new System.Threading.CancellationToken());
+
+            // Assert
+            result.Result.Status.Should().Be(HttpStatusCode.NotFound);
+            result.Result.ErrorMessage.Should().BeEquivalentTo(MovieDetailsConstants.MoviesNotFoundMessage);
+        }
+
+        private void SetupOk()
+        {
             var movies = new List<MovieInformation>();
             var movieDetails = new MovieInformation
             {
@@ -42,35 +70,13 @@ namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.GetMoviesList
 
             moqRepository.Setup(a => a.GetMoviesDetails()).
                 ReturnsAsync(moviesList);
-
-            var requestQuery = new GetMoviesListQuery();
-            var sut = new GetMoviesListHandler(moqRepository.Object);
-
-            // Act
-            var result = sut.Handle(requestQuery, new System.Threading.CancellationToken());
-
-            // Assert
-            result.Result.Status.Should().Be(HttpStatusCode.OK);
-            result.Result.Movies.Should().BeEquivalentTo(moviesList.Movies);
         }
 
-        [Fact]
-        public void WhenYouTryToFindMovieDetails_ReturnsNotFound()
+        private void SetupNotFound()
         {
-            // Arrange
             moviesList = null;
             moqRepository.Setup(a => a.GetMoviesDetails()).
                 ReturnsAsync(moviesList);
-
-            var requestQuery = new GetMoviesListQuery();
-            var sut = new GetMoviesListHandler(moqRepository.Object);
-
-            // Act
-            var result = sut.Handle(requestQuery, new System.Threading.CancellationToken());
-
-            // Assert
-            result.Result.Status.Should().Be(HttpStatusCode.NotFound);
-            result.Result.ErrorMessage.Should().BeEquivalentTo(MovieDetailsConstants.MoviesNotFoundMessage);
         }
     }
 }
