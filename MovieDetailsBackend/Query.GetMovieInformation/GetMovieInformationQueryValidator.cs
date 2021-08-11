@@ -1,11 +1,7 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MovieDetailsBackend.Query.GetMovieInformation
+﻿namespace MovieDetailsBackend.Query.GetMovieInformation
 {
+    using FluentValidation;
+
     public class GetMovieInformationQueryValidator : AbstractValidator<GetMovieInformationQuery>
     {
         public GetMovieInformationQueryValidator()

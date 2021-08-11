@@ -22,10 +22,7 @@
             {
                 return MovieInformationResponse.MapMovieInformationResponse(movies.Result);
             }
-            else
-            {
-                return MovieInformationResponse.CreateNotFoundError();
-            }
+            return MovieInformationResponse.CreateNotFoundError();
         }
     }
 }

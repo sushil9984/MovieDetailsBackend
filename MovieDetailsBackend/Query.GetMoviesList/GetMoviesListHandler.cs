@@ -23,10 +23,7 @@
             {
                 return MoviesListResponse.MapResponse(movies.Result);
             }
-            else
-            {
-                return MoviesListResponse.CreateNotFoundError();
-            }
+            return MoviesListResponse.CreateNotFoundError();
         }
     }
 }

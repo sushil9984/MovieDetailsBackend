@@ -36,10 +36,7 @@
             {
                 return Ok(response);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         /// <summary>
@@ -57,10 +54,7 @@
             {
                 return Ok(response);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }
