@@ -9,6 +9,7 @@ namespace MovieDetailsBackend
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using MovieDetailsBackend.Constants;
+    using MovieDetailsBackend.Services;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -28,6 +29,8 @@ namespace MovieDetailsBackend
         {
             services.AddControllers();
             services.AddSwaggerDocument(configure => configure.Title = MovieDetailsConstants.SwaggerTitle);
+
+            services.AddTransient<IRepository, Repository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
