@@ -1,5 +1,6 @@
 namespace MovieDetailsBackend
 {
+    using FluentValidation;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ namespace MovieDetailsBackend
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MovieDetailsBackend.Constants;
+    using MovieDetailsBackend.Extensions;
     using MovieDetailsBackend.Services;
 
     public class Startup
@@ -27,6 +29,8 @@ namespace MovieDetailsBackend
             services.AddTransient<IRepository, Repository>();
 
             services.AddMediatR(typeof(Startup));
+            services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
