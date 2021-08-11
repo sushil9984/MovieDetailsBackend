@@ -1,8 +1,9 @@
 ﻿namespace MovieDetailsBackend.Controllers
 {
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using System.Collections.Generic;
+    using MovieDetailsBackend.Query.GetMoviesList;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -10,16 +11,34 @@
     {
         private readonly ILogger<MovieInformationController> _logger;
 
-        public MovieInformationController(ILogger<MovieInformationController> logger)
+        private readonly IMediator _mediatr;
+
+        public MovieInformationController(
+            ILogger<MovieInformationController> logger,
+            IMediator mediatr)
         {
             _logger = logger;
+            _mediatr = mediatr;
         }
 
-        // GET: api/<MovieInformationController>
+        /// <summary>
+        /// Gets List of movies
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = _mediatr.Send(GetMoviesListQuery.Create());
+            _logger.LogInformation("Result - " + response?.Result?.Status);
+
+            if (response.Result.Status == System.Net.HttpStatusCode.OK)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // GET api/<MovieInformationController>/5
@@ -27,24 +46,6 @@
         public string Get(int id)
         {
             return "value";
-        }
-
-        // POST api/<MovieInformationController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<MovieInformationController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<MovieInformationController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
