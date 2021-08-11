@@ -1,4 +1,4 @@
-﻿namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.Query.GetMoviesList.Tests
+﻿namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.Query.GetMovieInformation.Tests
 {
     using FluentAssertions;
     using Moq;
