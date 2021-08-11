@@ -3,6 +3,7 @@
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using MovieDetailsBackend.Query.GetMovieInformation;
     using MovieDetailsBackend.Query.GetMoviesList;
 
     [Route("api/[controller]")]
@@ -41,11 +42,25 @@
             }
         }
 
-        // GET api/<MovieInformationController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        /// <summary>
+        /// Gets Movie Details / Information based on Title
+        /// </summary>
+        /// <param name="movieTitle"></param>
+        /// <returns></returns>
+        [HttpGet("GetMovieInformation/{movieTitle}")]
+        public IActionResult Get(string movieTitle)
         {
-            return "value";
+            var response = _mediatr.Send(GetMovieInformationQuery.Create(movieTitle));
+            _logger.LogInformation("Result - " + response?.Result?.Status);
+
+            if (response.Result.Status == System.Net.HttpStatusCode.OK)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

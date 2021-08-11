@@ -5,5 +5,7 @@
         public const string SwaggerTitle = "MovieDetails";
 
         public const string MoviesNotFoundMessage = "Movies Not Found";
+
+        public const string MovieDetailsNotFoundMessage = "Movie Details Not Found";
     }
 }

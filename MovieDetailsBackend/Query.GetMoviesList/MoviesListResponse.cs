@@ -1,9 +1,7 @@
 ﻿namespace MovieDetailsBackend.Query.GetMoviesList
 {
-    using FluentValidation.Results;
     using MovieDetailsBackend.Constants;
     using MovieDetailsBackend.Models;
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
@@ -15,10 +13,6 @@
         public HttpStatusCode Status { get; set; }
 
         public string ErrorMessage { get; set; }
-
-        public Type ExceptionType { get; set; }
-
-        public IEnumerable<ValidationFailure> Failures { get; set; }
 
         public static Task<MoviesListResponse> MapResponse(MoviesList movies)
         {
