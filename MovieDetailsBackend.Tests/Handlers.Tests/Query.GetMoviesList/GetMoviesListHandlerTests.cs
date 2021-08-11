@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using MovieDetailsBackend.Constants;
 using MovieDetailsBackend.Models;
 using MovieDetailsBackend.Query.GetMoviesList;
 using MovieDetailsBackend.Services;
@@ -51,6 +52,25 @@ namespace MovieDetailsBackend.Tests.Handlers.Tests.Query.GetMoviesList
             // Assert
             result.Result.Status.Should().Be(HttpStatusCode.OK);
             result.Result.Movies.Should().BeEquivalentTo(moviesList.Movies);
+        }
+
+        [Fact]
+        public void WhenYouTryToFindMovieDetails_ReturnsNotFound()
+        {
+            // Arrange
+            moviesList = null;
+            moqRepository.Setup(a => a.GetMoviesDetails()).
+                ReturnsAsync(moviesList);
+
+            var requestQuery = new GetMoviesListQuery();
+            var sut = new GetMoviesListHandler(moqRepository.Object);
+
+            // Act
+            var result = sut.Handle(requestQuery, new System.Threading.CancellationToken());
+
+            // Assert
+            result.Result.Status.Should().Be(HttpStatusCode.NotFound);
+            result.Result.ErrorMessage.Should().BeEquivalentTo(MovieDetailsConstants.MoviesNotFoundMessage);
         }
     }
 }
